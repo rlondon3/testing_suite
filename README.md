@@ -13,7 +13,7 @@ Example usage:
     try {
     // Assert equality
     expect(5).toEqual(5);
-    
+
     // Assert existence
     expect('Hello').toExist();
 
@@ -29,7 +29,7 @@ Example usage:
 
     // Assert array value
     expect(['apple', 'banana', 'orange']).toHaveArrayValueOf('banana');
-    
+
     } catch (error) {
     console.error(error.message);
     }
@@ -47,5 +47,47 @@ Example usage:
     toHavePropertyOf(expectedKey): Asserts that the actual object has a property with the expected key.
 
     toHaveArrayValueOf(expectedValue): Asserts that the actual array includes the expected value.
+
+### Testing Suite Methods
+
+The expect function includes a variety of assertion methods to cover different scenarios in your tests. Here's an overview of the available methods:
+
+    Comparison assertions:
+        toEqual(expected): Asserts that the actual value is equal to the expected value.
+
+    Existence and null checks:
+        toExist(): Asserts that the actual value is defined.
+        toBeNull(): Asserts that the actual value is null.
+
+    Numeric comparisons:
+        toBeGreaterThan(expected): Asserts that the actual value is greater than the expected value.
+        toBeGreaterThanOrEqual(expected): Asserts that the actual value is greater than or equal to the expected value.
+        toBeLessThan(expected): Asserts that the actual value is less than the expected value.
+        toBeLessThanOrEqual(expected): Asserts that the actual value is less than or equal to the expected value.
+
+    Type check:
+        toBeTypeOf(expectedType): Asserts that the type of the actual value matches the expected type.
+
+    Grouping check for arrays of objects:
+        toBeGroupedByProperty(expectedProperty): Asserts that the array is grouped by the specified property.
+
+    Falsy and truthy checks:
+        toBeTruthy(): Asserts that the actual value is truthy.
+        toBeFalsy(): Asserts that the actual value is falsy.
+
+    Length check for arrays and strings:
+        toHaveLengthOf(expectedLength): Asserts that the length of the actual value matches the expected length.
+
+    Property presence check for objects:
+        toHavePropertyOf(expectedKey): Asserts that the actual object has the specified property.
+
+    Array value inclusion check:
+        toHaveArrayValueOf(expectedValue): Asserts that the actual array includes the specified value.
+
+    Sum check for arrays of numbers:
+        toHaveSumOf(expectedSum): Asserts that the sum of the actual values matches the expected sum.
+
+    NaN check for numeric values:
+        toBeNaN(): Asserts that the actual value is NaN.
 
 Feel free to customize and expand the testing suite based on your project's needs. Happy testing! 🚀
