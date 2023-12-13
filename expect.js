@@ -1,132 +1,162 @@
-// Define a function named 'expect' that takes a single argument 'actual'
-export const expect = function (actual) {
-	// Return an object with several methods for making assertions
+const expect = function (actual) {
 	return {
-		// Define a method 'toEqual' for asserting equality between 'actual' and 'expected'
+		// Comparison assertions
+		// Compare the actual value with the expected value
 		toEqual: function (expected) {
-			// Check if 'actual' is not equal to 'expected'
 			if (actual !== expected) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(`Expected ${expected}, but got ${actual}`);
 			}
 		},
-		// Define a method 'toExist' for asserting that 'actual' is not undefined
+
+		// Existence and null checks
+		// Check if the actual value is defined
 		toExist: function () {
-			// Check if 'actual' is equal to undefined
 			if (actual === undefined) {
-				// Throw an error with a message indicating the expectation failure
-				throw new Error(`Expected value to be defined, but got ${actual}`);
+				throw new Error(`Expected value to be defined, but got undefined`);
 			}
 		},
-		// Define a method 'toExist' for asserting that 'actual' is not undefined
-		toBeDefined: function () {
-			// Check if 'actual' is equal to undefined
-			if (actual === undefined) {
-				// Throw an error with a message indicating the expectation failure
-				throw new Error(`Expected the value ${actual}, but got ${actual}`);
-			}
-		},
-		// Define a method 'toBeNull' for asserting that 'actual' is null
+		// Check if the actual value is not null
 		toBeNull: function () {
-			// Check if 'actual' is not null
 			if (actual !== null) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(`Expected a null value, but got ${actual}`);
 			}
 		},
-		// Define a method 'toBeTruthy' for asserting that 'actual' is truthy
-		toBeTruthy: function () {
-			// Check if 'actual' is falsy
-			if (!actual) {
-				// Throw an error with a message indicating the expectation failure
-				throw new Error(`Expected a truthy value, but got ${actual}`);
+
+		// Numeric comparisons
+		// Check if the actual value is greater than the expected value
+		toBeGreaterThan: function (expected) {
+			if (actual <= expected) {
+				throw new Error(`Expected ${actual} to be greater than ${expected}`);
 			}
 		},
-		// Define a method 'toBeFalsy' for asserting that 'actual' is falsy
-		toBeFalsy: function () {
-			// Check if 'actual' is truthy
-			if (actual) {
-				// Throw an error with a message indicating the expectation failure
-				throw new Error(`Expected a falsy value, but got ${actual}`);
+		// Check if the actual value is greater than or equal to the expected value
+		toBeGreaterThanOrEqual: function (expected) {
+			if (actual < expected) {
+				throw new Error(
+					`Expected ${actual} to be greater than or equal to ${expected}`
+				);
 			}
 		},
-		// Define a method 'toBeTypeOf' for asserting the type of 'actual'
+		// Check if the actual value is less than the expected value
+		toBeLessThan: function (expected) {
+			if (actual >= expected) {
+				throw new Error(`Expected ${actual} to be less than ${expected}`);
+			}
+		},
+		// Check if the actual value is less than or equal to the expected value
+		toBeLessThanOrEqual: function (expected) {
+			if (actual > expected) {
+				throw new Error(
+					`Expected ${actual} to be less than or equal to ${expected}`
+				);
+			}
+		},
+
+		// Type check
+		// Check if the actual value has the expected type
 		toBeTypeOf: function (expectedType) {
-			// Check if the type of 'actual' is not equal to 'expectedType'
 			if (typeof actual !== expectedType) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(
 					`Expected type ${expectedType}, but got ${typeof actual}`
 				);
 			}
 		},
-		// Define a method 'toHaveLengthOf' for asserting the length of 'actual'
-		toHaveLengthOf: function (expectedLength) {
-			// Check if the length of 'actual' is not equal to 'expectedLength'
-			if (actual.length !== expectedLength) {
-				// Throw an error with a message indicating the expectation failure
-				throw new Error(
-					`Expected length of ${expectedLength}, but got ${actual.length}`
-				);
-			}
-		},
-		// Define a method 'toHavePropertyOf' for asserting the presence of a property in 'actual'
-		toHavePropertyOf: function (expectedKey) {
-			// Check if 'actual' has a property named 'expectedKey'
-			if (!Object.prototype.hasOwnProperty.call(actual, expectedKey)) {
-				// Throw an error with a message indicating the expectation failure
-				throw new Error(
-					`Expected property of ${expectedKey}, but got ${actual}`
-				);
-			}
-		},
-		// Define a method 'toBeGroupedByPropery' for asserting that an array is grouped by a specific property
-		toBeGroupedByPropery: function (expectedProperty) {
-			// Check if 'actual' is an array
+
+		// Grouping check for arrays of objects
+		// Check if the array is grouped by the specified property
+		toBeGroupedByProperty: function (expectedProperty) {
 			if (!Array.isArray(actual)) {
 				throw new Error(`Expected an array, but got ${typeof actual}`);
 			}
-			// Check if each element in 'actual' has the expected property
+
 			const allElementsHaveProperty = actual.every((element) =>
 				Object.prototype.hasOwnProperty.call(element, expectedProperty)
 			);
+
 			if (!allElementsHaveProperty) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(
 					`Expected all elements to have property ${expectedProperty}, but some do not`
 				);
 			}
-			// Check if the array is effectively grouped by the expected property
+
 			const isGrouped = actual.every(
 				(element, index, array) =>
 					index === 0 ||
 					element[expectedProperty] === array[index - 1][expectedProperty]
 			);
+
 			if (!isGrouped) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(
 					`Expected array to be grouped by property ${expectedProperty}, but it is not`
 				);
 			}
 		},
-		// Define a method 'toHaveArrayValueOf' for asserting that 'actual' array includes a specific value
+
+		// Other assertions...
+
+		// Falsy and truthy checks
+		// Check if the actual value is truthy
+		toBeTruthy: function () {
+			if (!actual) {
+				throw new Error(`Expected a truthy value, but got ${actual}`);
+			}
+		},
+		// Check if the actual value is falsy
+		toBeFalsy: function () {
+			if (actual) {
+				throw new Error(`Expected a falsy value, but got ${actual}`);
+			}
+		},
+
+		// Length check for arrays and strings
+		// Check if the length of the actual value matches the expected length
+		toHaveLengthOf: function (expectedLength) {
+			if (actual.length !== expectedLength) {
+				throw new Error(
+					`Expected length of ${expectedLength}, but got ${actual.length}`
+				);
+			}
+		},
+
+		// Property presence check for objects
+		// Check if the actual object has the specified property
+		toHavePropertyOf: function (expectedKey) {
+			if (!Object.prototype.hasOwnProperty.call(actual, expectedKey)) {
+				throw new Error(
+					`Expected property of ${expectedKey}, but got ${actual}`
+				);
+			}
+		},
+
+		// Array value inclusion check
+		// Check if the actual array includes the specified value
 		toHaveArrayValueOf: function (expectedValue) {
-			// Check if 'actual' array does not include the 'expectedValue'
 			if (!actual.includes(expectedValue)) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(
 					`Expected array value of ${expectedValue}, but got ${actual}`
 				);
 			}
 		},
-		// Define a method 'toHaveSumOf' for asserting the sum of 'actual' values
+
+		// Sum check for arrays of numbers
+		// Check if the sum of the actual values matches the expected sum
 		toHaveSumOf: function (expectedSum) {
-			// Check if the sum of 'actual' values is not equal to 'expectedSum'
 			const actualSum = actual.reduce((acc, curr) => acc + curr, 0);
 			if (actualSum !== expectedSum) {
-				// Throw an error with a message indicating the expectation failure
 				throw new Error(`Expected sum of ${expectedSum}, but got ${actualSum}`);
 			}
 		},
+
+		// NaN check for numeric values
+		// Check if the actual value is NaN
+		toBeNaN: function () {
+			if (!isNaN(actual)) {
+				throw new Error(`Expected NaN, but got ${actual}`);
+			}
+		},
+
+		// Other assertions...
 	};
 };
+
+module.exports = expect;
