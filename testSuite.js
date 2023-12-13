@@ -13,7 +13,7 @@ describe('My test suite', () => {
 
 	test('checks if an array contains a specific value', () => {
 		const myArray = [1, 2, 3, 4];
-		expect(myArray).toHaveArrayValueOf(3);
+		expect(myArray).toHaveArrayValueOf(8);
 	});
 
 	// Add more tests as needed
