@@ -4,35 +4,38 @@ A simple and lightweight testing suite for Node.js that allows you to make asser
 
 ## Installation
 
-No installation is required. Simply copy the provided expect function into your Node.js project and start making assertions.
+No installation is required. Simply copy the provided testing suite files (expect.js, test.js, describe.js, testFramework.js, and testRunner.js) into your Node.js project and start making assertions.
 
     const { expect } = require('./path/to/your/testingSuite');
 
 Example usage:
 
-    try {
-    // Assert equality
-    expect(5).toEqual(5);
+    describe('My Test Suite', (test) => {
+        test('Assert equality', () => {
+            expect(5).toEqual(5);
+        });
 
-    // Assert existence
-    expect('Hello').toExist();
+        test('Assert existence', () => {
+            expect('Hello').toExist();
+        });
 
-    // Assert data type
-    expect(42).toBeTypeOf('number');
+        test('Assert data type', () => {
+            expect(42).toBeTypeOf('number');
+        });
 
-    // Assert array length
-    expect([1, 2, 3]).toHaveLengthOf(3);
+        test('Assert array length', () => {
+            expect([1, 2, 3]).toHaveLengthOf(3);
+        });
 
-    // Assert property existence
-    const obj = { key: 'value' };
-    expect(obj).toHavePropertyOf('key');
+        test('Assert property existence', () => {
+            const obj = { key: 'value' };
+            expect(obj).toHavePropertyOf('key');
+        });
 
-    // Assert array value
-    expect(['apple', 'banana', 'orange']).toHaveArrayValueOf('banana');
-
-    } catch (error) {
-    console.error(error.message);
-    }
+        test('Assert array value', () => {
+            expect(['apple', 'banana', 'orange']).toHaveArrayValueOf('banana');
+        });
+    });
 
 ### Assertion Methods
 
@@ -50,7 +53,12 @@ Example usage:
 
 ### Testing Suite Methods
 
-The expect function includes a variety of assertion methods to cover different scenarios in your tests. Here's an overview of the available methods:
+The testing suite now includes a describe function for organizing tests and a runTests function for executing them. Here's an updated overview of the available methods:
+
+    describe(suiteName, suiteFunction): Use this function to group related tests together.
+    runTests(): Use this function to execute all the tests defined in your project.
+
+The test and expect functions remain unchanged and provide a variety of assertion methods to cover different scenarios in your tests.
 
     Comparison assertions:
         toEqual(expected): Asserts that the actual value is equal to the expected value.
