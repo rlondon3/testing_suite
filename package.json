@@ -2,9 +2,9 @@
 	"name": "testing_suite",
 	"version": "1.0.0",
 	"description": "A light weight testing suite",
-	"main": "testSuite.js",
+	"main": "testRunner.js",
 	"scripts": {
-		"start": "node testSuite.js",
+		"start": "node codesmith_testing_suite/lib/testRunner.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Ralph Smith",

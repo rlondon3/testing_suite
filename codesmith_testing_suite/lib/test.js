@@ -1,4 +1,4 @@
-// Define the test function
+//Define the test function
 const test = (testName, testFunction) => {
 	try {
 		// Run the test function
