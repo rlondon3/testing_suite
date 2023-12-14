@@ -1,3 +1,5 @@
+// testSuite.js
+
 const expect = require('../expect');
 
 describe('My example test suite', (test) => {
@@ -9,11 +11,9 @@ describe('My example test suite', (test) => {
 		const myArray = [1, 2, 3, 4];
 		expect(myArray).toHaveArrayValueOf(8);
 	});
-});
 
-// Another suite
-describe('Another suite', (test) => {
-	test('example test', () => {
-		// Your test logic here
+	// Add an assertions test
+	test('assertions test', () => {
+		expect().assertions(2); // Expecting 3 assertions
 	});
 });

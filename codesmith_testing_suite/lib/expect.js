@@ -1,5 +1,29 @@
+const { deepStrictEqual } = require('../../helpers/helperFunctions');
+
 const expect = function (actual) {
 	return {
+		// Automatically increment the assertion count
+		// New method to access global assertions
+		assertions: function (expectedCount) {
+			if (expectedCount !== global.getTestCount()) {
+				throw new Error(
+					`Expected ${expectedCount} assertions, but ${global.getTestCount()} assertions were called`
+				);
+			}
+		},
+		assertionsCountToBe: function (expectedCount) {
+			const totalAssertions = global.getTestCount() + 1;
+			if (expectedCount !== totalAssertions) {
+				throw new Error(
+					`Expected ${expectedCount} assertions, but ${totalAssertions} assertions were called`
+				);
+			}
+		},
+		hasAssertions: function () {
+			if (global.getTestCount() < 1) {
+				throw new Error(`Expected at least 1 assertion, but got none`);
+			}
+		},
 		// Comparison assertions
 		// Compare the actual value with the expected value
 		toEqual: function (expected) {
@@ -8,6 +32,39 @@ const expect = function (actual) {
 			}
 		},
 
+		// Compare objects for strict equality
+		toStrictEqual: function (expected) {
+			const areEqual = deepStrictEqual(actual, expected);
+			if (!areEqual) {
+				throw new Error(
+					`Expected objects to be strictly equal, but they are not`
+				);
+			}
+		},
+		// Check if the actual object matches a subset of the expected object's properties
+		toMatchObject: function (expected) {
+			const actualKeys = Object.keys(actual);
+			const expectedKeys = Object.keys(expected);
+
+			for (const key of expectedKeys) {
+				if (
+					!actualKeys.includes(key) ||
+					!deepStrictEqual(actual[key], expected[key])
+				) {
+					throw new Error(`Expected object to match subset, but it does not`);
+				}
+			}
+
+			return true;
+		},
+		// Check if the actual string matches a regular expression
+		toMatch: function (expectedRegex) {
+			if (!expectedRegex.test(actual)) {
+				throw new Error(
+					`Expected string to match the regular expression, but it does not`
+				);
+			}
+		},
 		// Existence and null checks
 		// Check if the actual value is defined
 		toExist: function () {
@@ -137,6 +194,14 @@ const expect = function (actual) {
 				);
 			}
 		},
+		// Check if the actual array contains the expected item
+		toContain: function (expectedItem) {
+			if (!actual.includes(expectedItem)) {
+				throw new Error(
+					`Expected array to contain ${expectedItem}, but it does not`
+				);
+			}
+		},
 
 		// Sum check for arrays of numbers
 		// Check if the sum of the actual values matches the expected sum
@@ -155,7 +220,91 @@ const expect = function (actual) {
 			}
 		},
 
-		// Other assertions...
+		// Modifiers
+		//Negates a comparison- check if the actual value is not equal to the expected value.
+		not: function (expected) {
+			if (actual == expected) {
+				throw new Error(`Expected ${expected} to not equal ${actual}`);
+			}
+		},
+
+		// Matchers
+		// Resolves for unwrapping the value of a fulfilled promise
+		resolves: async function () {
+			// Check if the actual value is a promise
+			if (!(actual instanceof Promise)) {
+				throw new Error(`Expected a promise, but got ${typeof actual}`);
+			}
+
+			try {
+				// Wait for the promise to resolve
+				const result = await actual;
+				return result; // Return the unwrapped result
+			} catch (error) {
+				// If the promise is rejected, throw an error
+				throw new Error(
+					`Expected promise to be fulfilled, but it was rejected with: ${error}`
+				);
+			}
+		},
+		// Rejects for unwrapping the reason of a rejected promise
+		rejects: async function () {
+			// Check if the actual value is a promise
+			if (!(actual instanceof Promise)) {
+				throw new Error(`Expected a promise, but got ${typeof actual}`);
+			}
+
+			try {
+				// Wait for the promise to be rejected
+				await actual;
+				// If the promise is fulfilled, throw an error
+				throw new Error(
+					'Expected promise to be rejected, but it was fulfilled'
+				);
+			} catch (reason) {
+				// Return the unwrapped reason for further assertions
+				return reason;
+			}
+		},
+		isPromise: async function () {
+			if (!(actual instanceof Promise)) {
+				throw new Error(`Expected promise, but got typeof ${actual}`);
+			}
+		},
+		// ToThrow for testing if a function throws an exception
+		toThrow: function () {
+			// Check if the actual value is a function
+			if (typeof actual !== 'function') {
+				throw new Error(`Expected a function, but got ${typeof actual}`);
+			}
+
+			try {
+				// Call the function
+				actual();
+				// If the function did not throw, throw an error
+				throw new Error('Expected function to throw, but it did not');
+			} catch (error) {
+				// Return the caught error for further assertions
+				return error;
+			}
+		},
+		// Returns for testing if a function returns a value
+		returns: function () {
+			// Check if the actual value is a function
+			if (typeof actual !== 'function') {
+				throw new Error(`Expected a function, but got ${typeof actual}`);
+			}
+
+			try {
+				// Call the function
+				const result = actual();
+				// Return the result for further assertions
+				return result;
+			} catch (error) {
+				// If the function throws, return the caught error
+				return error;
+			}
+		},
 	};
 };
 

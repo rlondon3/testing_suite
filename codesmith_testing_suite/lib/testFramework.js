@@ -1,4 +1,7 @@
+// testFramework.js
+
 global.testSuites = [];
+global.testCount = -1; // Initialize the global test count to -1 to account for the .assertions and/or hasAssertion test
 
 function describe(suiteName, suiteFunction) {
 	const tests = [];
@@ -15,6 +18,7 @@ function runTests() {
 		);
 		for (const test of suite.tests) {
 			try {
+				global.testCount++;
 				test.func();
 				console.log(`  \x1b[38;5;46m✓ ${test.name}\x1b[0m`);
 			} catch (error) {
@@ -38,3 +42,4 @@ function test(testName, testFunction) {
 global.describe = describe;
 global.runTests = runTests;
 global.test = test;
+global.getTestCount = () => global.testCount; // Function to get the test count
