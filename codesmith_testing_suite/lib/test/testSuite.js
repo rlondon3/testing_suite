@@ -5,21 +5,28 @@ describe('Expect.js methods test suite', (test) => {
 	// Define a variable to store information across tests
 	let sharedData;
 
+	// beforeAll: Run once before any test in the suite
+	beforeAll(() => {
+		sharedData = { key: 'initial value' };
+		console.log(`Data before all test: ${sharedData.key}`);
+	});
+
 	// beforeEach: Set up before each test
 	beforeEach(() => {
-		sharedData = { key: 'initial value' };
-		console.log(`Setting up before each test: Shared Data = ${sharedData.key}`);
+		console.log('Setting up before each test...');
+		// Additional setup logic, if needed
 	});
 
 	// afterEach: Tear down after each test
 	afterEach(() => {
-		sharedData = null; // Reset shared data
-		console.log(`Tearing down after each test: Shared Data = ${sharedData}`);
+		console.log('Tearing down after each test...');
+		// Additional teardown logic, if needed
 	});
 
 	// afterAll: Run after all tests in the suite
 	afterAll(() => {
-		console.log('Running after all tests...');
+		sharedData = null; // Reset shared data- clean up
+		console.log(`Data after all test: ${sharedData}`);
 	});
 	// Comparison Assertions
 	test('toEqual method', () => {
@@ -141,6 +148,12 @@ describe('Expect.js methods test suite', (test) => {
 		const returningFunction = () => 'Returned value';
 		expect(returningFunction).returns();
 	});
+
+	// Async test with a delay longer than the timeout
+	test('Timeout test', async () => {
+		// Simulate a delay longer than the default timeout (5 seconds)
+		await new Promise((resolve) => setTimeout(resolve, 10000));
+	});
 	// Assertion Count Methods
 
 	test('hasAssertions method', () => {
@@ -148,10 +161,10 @@ describe('Expect.js methods test suite', (test) => {
 	});
 
 	test('assertionsCountToBe method', () => {
-		expect().assertionsCountToBe(25);
+		expect().assertionsCountToBe(26);
 	});
 
 	test('assertions method', () => {
-		expect().assertions(24);
+		expect().assertions(25);
 	});
 });

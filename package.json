@@ -5,11 +5,14 @@
 	"main": "testRunner.js",
 	"scripts": {
 		"start": "node codesmith_testing_suite/lib/testRunner.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test-watch": "node codesmith_testing_suite/lib/testRunner.js watch"
 	},
 	"author": "Ralph Smith",
 	"license": "ISC",
 	"dependencies": {
 		"node": "^21.2.0"
+	},
+	"devDependencies": {
+		"http": "^0.0.1-security"
 	}
 }
