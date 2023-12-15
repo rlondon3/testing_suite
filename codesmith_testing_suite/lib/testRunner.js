@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-require('./testFramework'); // Import the test framework
+// Import the test framework
+require('./testFramework');
 
 // Find all test files in the 'test' directory
 const testFiles = fs
@@ -11,12 +12,17 @@ const testFiles = fs
 
 // Run the tests
 testFiles.forEach((file) => {
+	// Import the tests from each test file
 	const tests = require(file);
+
+	// Describe the entire test suite using the file name
 	describe(file, () => {
+		// Iterate over the suites and describe each one
 		Object.entries(tests).forEach(([suiteName, suiteFunction]) => {
 			describe(suiteName, suiteFunction);
 		});
 	});
 });
 
-runTests(); // Run all the tests
+// Run all the tests
+runTests();

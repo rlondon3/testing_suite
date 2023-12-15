@@ -1,7 +1,8 @@
-// testFramework.js
-
 global.testSuites = [];
-global.testCount = -1; // Initialize the global test count to -1 to account for the .assertions and/or hasAssertion test
+global.testCount = -1;
+global.afterAllFunctions = []; // Store functions to be executed after all tests
+global.beforeEachFunctions = []; // Store functions to be executed before each test
+global.afterEachFunctions = []; // Store functions to be executed after each test
 
 function describe(suiteName, suiteFunction) {
 	const tests = [];
@@ -18,16 +19,32 @@ function runTests() {
 		);
 		for (const test of suite.tests) {
 			try {
+				// Execute beforeEach functions before each test
+				global.beforeEachFunctions.forEach((beforeEachFunction) => {
+					beforeEachFunction();
+				});
+
 				global.testCount++;
 				test.func();
+
 				console.log(`  \x1b[38;5;46m✓ ${test.name}\x1b[0m`);
 			} catch (error) {
 				console.error(
 					`  \x1b[38;5;196m✗ \x1b[38;5;196m${test.name}\n    ${error.message}\x1b[0m`
 				);
+			} finally {
+				// Execute afterEach functions after each test
+				global.afterEachFunctions.forEach((afterEachFunction) => {
+					afterEachFunction();
+				});
 			}
 		}
 	}
+
+	// Execute afterAll functions after all tests
+	global.afterAllFunctions.forEach((afterAllFunction) => {
+		afterAllFunction();
+	});
 }
 
 function test(testName, testFunction) {
@@ -39,7 +56,25 @@ function test(testName, testFunction) {
 	}
 }
 
+// Function to add an afterAll function
+function afterAll(afterAllFunction) {
+	global.afterAllFunctions.push(afterAllFunction);
+}
+
+// Function to add a beforeEach function
+function beforeEach(beforeEachFunction) {
+	global.beforeEachFunctions.push(beforeEachFunction);
+}
+
+// Function to add an afterEach function
+function afterEach(afterEachFunction) {
+	global.afterEachFunctions.push(afterEachFunction);
+}
+
 global.describe = describe;
 global.runTests = runTests;
 global.test = test;
-global.getTestCount = () => global.testCount; // Function to get the test count
+global.getTestCount = () => global.testCount;
+global.afterAll = afterAll;
+global.beforeEach = beforeEach;
+global.afterEach = afterEach;
