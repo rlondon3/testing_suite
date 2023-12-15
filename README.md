@@ -1,6 +1,6 @@
 # Node.js Lightweight Testing Suite
 
-A simple and lightweight testing suite for Node.js that allows you to make assertions with ease. This testing suite provides a set of assertion methods to check for equality, existence, data types, array values, and more.
+A simple and lightweight testing suite for Node.js that allows you to make assertions with ease. This testing suite provides a set of assertion methods to check for equality, existence, data types, array values, and more. Additionally, it supports the organization of tests using the beforeAll, beforeEach, afterEach, and afterAll functions, allowing you to set up preconditions, execute code before and after each test, and perform cleanup tasks. The framework aims to offer flexibility and simplicity in writing and organizing tests for your Node.js projects.
 
 ## Installation
 
@@ -97,5 +97,9 @@ The test and expect functions remain unchanged and provide a variety of assertio
 
     NaN check for numeric values:
         toBeNaN(): Asserts that the actual value is NaN.
+
+### Test Reporter
+
+The testing suite now includes a test reporter that generates an HTML report of your test results. The report is saved in the test-results folder as results.html.
 
 Feel free to customize and expand the testing suite based on your project's needs. Happy testing! 🚀
