@@ -1,5 +1,6 @@
 // testFramework.js
 
+const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -159,7 +160,7 @@ function beforeAll(beforeAllFunction) {
  */
 function startHttpServer() {
 	const server = http.createServer((req, res) => {
-		// Serve the HTML file dynamically
+		// Serve the HTML file dynamically with added styles and scripts
 		const filePath = path.join(__dirname, 'test-results', 'results.html');
 		fs.readFile(filePath, 'utf8', (err, data) => {
 			if (err) {
@@ -168,8 +169,24 @@ function startHttpServer() {
 				return;
 			}
 
+			const $ = cheerio.load(data);
+
+			// Add the link to Bootstrap CSS in the head of the HTML
+			$('head').append(
+				'<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />'
+			);
+
+			// Add the scripts to the end of the body in the HTML
+			$('body').append(`
+                <script src="node_modules/jquery/dist/jquery.min.js"></script>
+                <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+                <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="node_modules/mdbootstrap/js/mdb.min.js"></script>
+            `);
+
+			// Respond with the updated HTML
 			res.writeHead(200, { 'Content-Type': 'text/html' });
-			res.end(data);
+			res.end($.html());
 		});
 	});
 
@@ -207,3 +224,14 @@ global.afterAll = afterAll;
 global.beforeEach = beforeEach;
 global.afterEach = afterEach;
 global.beforeAll = beforeAll;
+
+module.exports = {
+	describe,
+	runTests,
+	test,
+	getTestCount,
+	afterAll,
+	beforeEach,
+	afterEach,
+	beforeAll,
+};

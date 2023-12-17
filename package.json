@@ -13,6 +13,11 @@
 		"node": "^21.2.0"
 	},
 	"devDependencies": {
-		"http": "^0.0.1-security"
+		"bootstrap": "^5.3.2",
+		"cheerio": "^1.0.0-rc.12",
+		"http": "^0.0.1-security",
+		"jquery": "^3.7.1",
+		"mdbootstrap": "^4.20.0",
+		"popper.js": "^1.16.1"
 	}
 }
