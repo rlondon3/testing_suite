@@ -101,5 +101,6 @@ The test and expect functions remain unchanged and provide a variety of assertio
 ### Test Reporter
 
 The testing suite now includes a test reporter that generates an HTML report of your test results. The report is saved in the test-results folder as results.html.
+![Alt Text](https://github.com/rlondon3/testing_suite/blob/main/codesmith_testing_suite/lib/assets/testSuit.png)
 
 Feel free to customize and expand the testing suite based on your project's needs. Happy testing! 🚀
