@@ -7,6 +7,12 @@ A simple and lightweight testing suite for Node.js that allows you to make asser
 No installation is required. Simply copy the provided testing suite files (expect.js, test.js, describe.js, testFramework.js, and testRunner.js) into your Node.js project and start making assertions.
 
     const { expect } = require('./path/to/your/testingSuite');
+### Testing Suite Methods
+
+The testing suite includes a describe function for organizing tests and executing them:
+
+    describe(suiteName, suiteFunction): Use this function to group related tests together.
+    expect function provides a variety of assertion methods to cover different scenarios in your tests. 
 
 Example usage:
 
@@ -37,28 +43,8 @@ Example usage:
         });
     });
 
-### Assertion Methods
 
-    toEqual(expected): Asserts that the actual value is equal to the expected value.
-
-    toExist(): Asserts that the actual value is neither null nor undefined.
-
-    toBeTypeOf(expectedType): Asserts that the type of the actual value matches the expected type.
-
-    toHaveLengthOf(expectedLength): Asserts that the length of the actual value (for arrays or strings) matches the expected length.
-
-    toHavePropertyOf(expectedKey): Asserts that the actual object has a property with the expected key.
-
-    toHaveArrayValueOf(expectedValue): Asserts that the actual array includes the expected value.
-
-### Testing Suite Methods
-
-The testing suite now includes a describe function for organizing tests and a runTests function for executing them. Here's an updated overview of the available methods:
-
-    describe(suiteName, suiteFunction): Use this function to group related tests together.
-    runTests(): Use this function to execute all the tests defined in your project.
-
-The test and expect functions remain unchanged and provide a variety of assertion methods to cover different scenarios in your tests.
+### Types of Assertions:
 
     Comparison assertions:
         toEqual(expected): Asserts that the actual value is equal to the expected value.
@@ -97,6 +83,20 @@ The test and expect functions remain unchanged and provide a variety of assertio
 
     NaN check for numeric values:
         toBeNaN(): Asserts that the actual value is NaN.
+
+### Example Assertion Methods
+
+    toEqual(expected): Asserts that the actual value is equal to the expected value.
+
+    toExist(): Asserts that the actual value is neither null nor undefined.
+
+    toBeTypeOf(expectedType): Asserts that the type of the actual value matches the expected type.
+
+    toHaveLengthOf(expectedLength): Asserts that the length of the actual value (for arrays or strings) matches the expected length.
+
+    toHavePropertyOf(expectedKey): Asserts that the actual object has a property with the expected key.
+
+    toHaveArrayValueOf(expectedValue): Asserts that the actual array includes the expected value.
 
 ### Test Reporter
 
