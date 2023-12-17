@@ -44,7 +44,7 @@ Example usage:
     });
 
 
-### Types of Assertions:
+### Example of Types of Assertions:
 
     Comparison assertions:
         toEqual(expected): Asserts that the actual value is equal to the expected value.
@@ -83,20 +83,6 @@ Example usage:
 
     NaN check for numeric values:
         toBeNaN(): Asserts that the actual value is NaN.
-
-### Example Assertion Methods
-
-    toEqual(expected): Asserts that the actual value is equal to the expected value.
-
-    toExist(): Asserts that the actual value is neither null nor undefined.
-
-    toBeTypeOf(expectedType): Asserts that the type of the actual value matches the expected type.
-
-    toHaveLengthOf(expectedLength): Asserts that the length of the actual value (for arrays or strings) matches the expected length.
-
-    toHavePropertyOf(expectedKey): Asserts that the actual object has a property with the expected key.
-
-    toHaveArrayValueOf(expectedValue): Asserts that the actual array includes the expected value.
 
 ### Test Reporter
 
