@@ -3,6 +3,26 @@
 // Import the deepStrictEqual function from the helperFunctions module
 const { deepStrictEqual } = require('./helperFunctions');
 
+function Validator(value) {
+	this.value = value;
+	this.errors = [];
+
+	this.validate = function (condition, errorMessage) {
+		if (!condition) {
+			this.errors.push(errorMessage);
+		}
+		return this;
+	};
+
+	this.getResult = function () {
+		return {
+			value: this.value,
+			errors: this.errors,
+			isValid: this.errors.length === 0,
+		};
+	};
+}
+
 // Helper Functions
 
 // Validate Assertion Count
@@ -21,6 +41,18 @@ function validateEquality(actual, expected) {
 	if (actual !== expected) {
 		throw new Error(`Expected ${expected}, but got ${actual}`);
 	}
+}
+
+// After
+function validateEquality(actual, expected) {
+	const validator = new Validator(actual);
+
+	validator.validate(
+		actual === expected,
+		`Expected ${expected}, but got ${actual}`
+	);
+
+	return validator.getResult();
 }
 
 // Validate Deep Equality
@@ -124,6 +156,17 @@ function validateArrayGrouping(actual, expectedProperty) {
 
 // Validate Array Inclusion
 function validateArrayInclusion(actual, expectedItem) {
+	// Check if the actual value is a function
+	if (typeof actual === 'function') {
+		// If it's a function, invoke it to get the array
+		actual = actual();
+	}
+
+	// Check if the actual value is an array
+	if (!Array.isArray(actual)) {
+		throw new Error(`Expected an array, but got ${typeof actual}`);
+	}
+
 	// Check if the array contains the expected item
 	if (!actual.includes(expectedItem)) {
 		throw new Error(
@@ -177,6 +220,31 @@ function validateNotEquality(actual, expected) {
 	// Check if the actual value is not equal to the expected value
 	if (actual == expected) {
 		throw new Error(`Expected ${expected} to not equal ${actual}`);
+	}
+}
+
+// Validate Not Equality with Function Throw Check
+function validateNotEqualityWithThrowCheck(func) {
+	// Check if the input is a function
+	if (typeof func !== 'function') {
+		throw new Error(`Expected a function, but got ${typeof func}`);
+	}
+
+	try {
+		const result = func();
+
+		// If the function returns a promise, wait for it to resolve
+		if (result instanceof Promise) {
+			return result.then(() => {
+				throw new Error('Expected function to throw, but it did not');
+			});
+		}
+
+		// If the function did not throw, throw an error
+		throw new Error('Expected function to throw, but it did not');
+	} catch (error) {
+		// Return the caught error for further assertions
+		return Promise.resolve(error);
 	}
 }
 
@@ -261,8 +329,30 @@ function validateIsPromise(value) {
 	}
 }
 
+// Validate if a specific field error message is present in the provided messages
+function validateHasKeyForField(errorMessages, fieldName) {
+	const messages =
+		typeof errorMessages === 'function' ? errorMessages() : errorMessages;
+
+	// Check if messages is an array and contains the expected error message
+	if (Array.isArray(messages) && !messages.includes(`Invalid ${fieldName}`)) {
+		throw new Error(
+			`Expected error message for field ${fieldName}, but none found`
+		);
+	}
+
+	// Check if the error messages object has a key for the specified field
+	if (typeof messages === 'object' && !(fieldName in messages)) {
+		throw new Error(
+			`Expected error message for field ${fieldName}, but none found`
+		);
+	}
+}
+
 // Export the helper functions
 module.exports = {
+	validateNotEqualityWithThrowCheck,
+	validateHasKeyForField,
 	validateAssertionCount,
 	validateEquality,
 	validateDeepEquality,

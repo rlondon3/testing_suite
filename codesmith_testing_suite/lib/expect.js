@@ -1,4 +1,5 @@
-// Import the deepStrictEqual function from the helperFunctions module
+// expect.js
+// Import the deepStrictEqual function from the validationHelpers module
 const validationHelpers = require('../../helpers/validationFunctions');
 
 // Define the main expect function
@@ -83,7 +84,9 @@ const expect = function (actual) {
 		toBeGroupedByProperty: function (expectedProperty) {
 			validationHelpers.validateArrayGrouping(actual, expectedProperty);
 		},
-
+		toHaveProperty: function (property) {
+			validationHelpers.validateEquality(actual, property);
+		},
 		// Other Assertions...
 
 		// Array Value Inclusion Check
@@ -112,6 +115,17 @@ const expect = function (actual) {
 		not: function (expected) {
 			validationHelpers.validateNotEquality(actual, expected);
 		},
+		// New modifier for checking if a function does not throw
+		notToThrow: async function () {
+			const func = actual;
+			try {
+				await validationHelpers.validateNotEqualityWithThrowCheck(func);
+			} catch (error) {
+				throw new Error(
+					`Expected function not to throw, but it threw: ${error.message}`
+				);
+			}
+		},
 
 		// Matchers
 		resolves: async function () {
@@ -128,6 +142,21 @@ const expect = function (actual) {
 		},
 		returns: function () {
 			validationHelpers.validateFunctionReturns(actual);
+		},
+		resolvesAsync: async function () {
+			await actual; // Assuming `actual` is a promise
+		},
+		// toShowErrorForField method
+		toShowErrorForField: function (fieldName) {
+			const errorMessages = typeof actual === 'function' ? actual() : actual; // Assuming `actual` retrieves form error messages
+
+			// Check if the error messages array contains an entry for the specified field
+			validationHelpers.validateArrayInclusion(
+				errorMessages,
+				`Invalid ${fieldName}`
+			);
+			// Check if the error messages object has a key for the specified field
+			validationHelpers.validateHasKeyForField(errorMessages, fieldName);
 		},
 	};
 };

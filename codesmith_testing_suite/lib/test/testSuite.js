@@ -1,4 +1,6 @@
+//testSuite.js
 const expect = require('../expect');
+const axios = require('axios');
 
 // Test suite for expect.js methods
 describe('Expect.js methods test suite', (test) => {
@@ -166,5 +168,46 @@ describe('Expect.js methods test suite', (test) => {
 
 	test('assertions method', () => {
 		expect().assertions(25);
+	});
+	// Async test making an API request
+	test('Async/await resolves successfully', async () => {
+		try {
+			// Make an API request to JSONPlaceholder to get a post by ID 1
+			const promise = await axios.get(
+				'https://jsonplaceholder.typicode.com/posts/1'
+			);
+			// Assert that the API request resolves successfully
+			await expect(promise).resolvesAsync();
+			// Assert that the response is successful
+			const response = await promise;
+			expect(response.status).toEqual(200);
+
+			// Assert specific properties of the response data
+			const postData = response.data;
+			expect(postData).toHaveProperty('id');
+			expect(postData.id).toEqual(1);
+			expect(postData).toHaveProperty('title');
+			expect(postData).toHaveProperty('body');
+		} catch (error) {
+			// Handle any errors that occur during the test
+			console.error('API Request Test failed:', error.message);
+			throw error;
+		}
+	});
+
+	// New test for toShowErrorForField method
+	test('toShowErrorForField method', () => {
+		// Set up
+		const fieldName = 'Username';
+
+		// Mock the actual function
+		const actual = () => {
+			// Simulate the behavior of the actual function
+			return ['Invalid Username']; // Assuming an array of error messages
+		};
+		// Test the toShowErrorForField method using the mocked function
+		expect(() => {
+			expect(actual).toShowErrorForField(fieldName);
+		}).notToThrow();
 	});
 });

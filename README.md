@@ -7,12 +7,13 @@ A simple and lightweight testing suite for Node.js that allows you to make asser
 No installation is required. Simply copy the provided testing suite files (expect.js, test.js, describe.js, testFramework.js, and testRunner.js) into your Node.js project and start making assertions.
 
     const { expect } = require('./path/to/your/testingSuite');
+
 ### Testing Suite Methods
 
 The testing suite includes a describe function for organizing tests and executing them:
 
     describe(suiteName, suiteFunction): Use this function to group related tests together.
-    expect function provides a variety of assertion methods to cover different scenarios in your tests. 
+    expect function provides a variety of assertion methods to cover different scenarios in your tests.
 
 Example usage:
 
@@ -41,8 +42,13 @@ Example usage:
         test('Assert array value', () => {
             expect(['apple', 'banana', 'orange']).toHaveArrayValueOf('banana');
         });
-    });
 
+        test('Async/await resolves successfully', async () => {
+            // Simulate an asynchronous operation
+            const result = await new Promise((resolve) => setTimeout(() => resolve('Async Result'), 1000));
+            expect(result).toEqual('Async Result');
+        });
+    });
 
 ### Example of Types of Assertions:
 
